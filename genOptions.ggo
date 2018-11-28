@@ -1,0 +1,72 @@
+package "SerialInterfacer"
+version "v1.0, Nov. 2018"
+purpose "This dodgy command line tool acts as a command line interfacer with the Bruker BVT3000 NMR heater unit that uses a Eurotherm 902s PID controller. 
+
+It provides many silly, but hopefully useful, command line commands to check hardware status, measure things, and so on. Everything is either dreadfully verbose (with the -v switch), or alternatively consists of: 
+'***XXXX: VALUE', where 'XXXX' depends on the command requested (e.g. TEMP) and 'VALUE' is the return of that command. See the documentation (that I haven't yet written...) for more details. 
+"
+text "\n Written by Jack J. Miller, University of Oxford, heavily ''inspired by'' code from Fsc2, a free spectrometer driving software, written by Jens Thoms Toerring. \n
+Licensed under under the terms of the GNU General Public License, v3, or at your choice any later license.\n
+Given that this software can be used with hardware designed to cool samples to 77 K or heat them to 1000 K, please particularly note the section of the GPL disclaiming liability!\n"
+usage "-d /path/to/serialPort command [command argument]" 
+description "For variable temperature NMR experiments." 
+option "verbose" v "Debugging verbosity" flag off 
+
+#Boring options 
+section "Serial devices"
+option "device" d "Serial port device to use"  string required default="/dev/null"
+option "list-devices" - "List found serial devices for debugging purposes (specify a dummy -d=Path)"  flag off 
+
+
+#Heater
+section "Heater controls"
+option "heater-on" - "Turn on the heater (Be careful!)" flag off 
+option "heater-off" O "Turn the heater off" flag off 
+text "\n"
+option "get-heater-state" G "See if the heater is on or off" flag off 
+option "set-heater-power-limit" - "Live dangerously by increasing the maximum heater power (a percentage between 0/100)" optional float 
+option "get-heater-power-limit" - "Get the heater power limit" flag off 
+option "get-heater-power" - "Get the current heater power (as a percentage)" flag off 
+option "set-heater-power" - "Set the current heater power (as a percentage)" optional float 
+option "check-sensor-break" - "Check to see if the Thermocouples are broken" flag off
+option "check-heater" X "Check to see if the heater is overheating" flag off
+
+
+#Gas flow 
+section "Gas flow controls"
+option "get-gas-flow-rate" g "Return the gas flow rate in l/hr" flag off 
+option "set-gas-flow-rate" s "Set the gas flow rate to one of 16 values between 0 and 2000 l/hr. NB: 0 disables the heater." optional float 
+
+#Temperature
+section "Temperature methods"
+option "read-temperature" r "Read temperature" flag off 
+option "set-temperature-setpoint" - "Set the temperature setpoint" optional float 
+option "get-temperature-setpoint" R "Get the current temperature setpoint" flag off 
+
+#LN2
+section "Liquid Nitrogen methods (NB: you need the optional N2 evaporator)"
+option "get-ln2-heater-state" - "Get the LN2 heater state (on/off)" flag off 
+option "set-ln2-heater-state" - "Turn on/off the LN2 heater (1=on)" optional int
+option "get-ln2-heater-power" - "Get the LN2 heater power" flag off 
+option "set-ln2-heater-power" - "Set the LN2 heater power (as a percentage)" optional float 
+option "check-ln2-heater" - "Check the LN2 tank to see if it is okay, needs a refil, or is empty" flag off
+
+section "PID control" 
+option "enable-PID-control" E "Enable the PID control of temperature to the setpoint" flag off 
+option "manual-mode" M "Set the device into manual heater power mode" flag off 
+option "get-mode" - "Return the current PID / Manual control mode" flag off
+option "set-proportional-band" - "Set the P part of PID" optional float 
+option "get-proportional-band" - "Get the P part of PID"  flag off 
+option "set-integral-time" - "Set the I part of PID" optional float 
+option "get-integral-time" - "Get the I part of PID" flag off 
+option "set-differential-time" - "Set the D part of PID" optional float 
+option "get-differential-time" - "Get the D in the PID" flag off
+
+
+#Misc 
+section "Misc. methods"
+option "lock-keypad" - "Unlock (1) or lock (0) the Eurotherm keypad" optional int
+option "get-eurotherm-status" - "Get the status of the Eurotherm controller (alarming or not)" flag off
+option "status-all" - "Return the status of everything that is a status" flag off
+
+text "\n Example invocation to read temperature (K), and gas flow rate (l/hours): \n\n BVTserialInterfacer -d /dev/ttyUSB0 -r --get-gas-flow-rate\n"
