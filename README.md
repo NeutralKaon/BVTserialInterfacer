@@ -1,8 +1,8 @@
 # BVT Serial Interfacer 
 
-This program is a command line interface to the Bruker BVT3000-series of variable temperature devices. 
+This program is a command line interface to the Bruker BVT3x00-series of variable temperature devices. 
 
-They exist to alter the temperature of samples in spectrometers, from ~77K or below to as hot as you are willing to go. You probably know if you have one. 
+They exist to alter the temperature of samples in spectrometers, from ~77K or below to as hot as you are willing to go. There are probably not many people on the planet who have these, or similar, devices, but if you are one of them, greetings! I hope you find this useful. 
 
 While you can control what they do with the EDTE command in TopSpin, it requires a license of TopSpin and a Bruker spectrometer. You may wish to use them independently, or alternatively, to hook up the hardware to something more exotic. 
 
@@ -11,11 +11,10 @@ I found myself needing to do exactly this, and with few other available tools th
 # Installation 
 
 This code relies upon libserialport, a cross-platform serial library that works on essentially all popular OSes. Either `apt-get install libserialport` it, or download and install the code in the usual way. 
-After that, `make && sudo make install`. Note that if you are a (mad) developer and you want to see the hex that is sent and received from your device, `make debug`. 
+After that, `make && sudo make install`. Note that if you are a (mad) developer and you want to see the hex that is sent and received from your device, `make debug`. This also requires GNU gengetopt as a dependency (or edit the Makefile). 
 
 I'm hopefully going to write a WxPython / Chacao GUI wrapper around the whole lot. The hardware we have sits in a separate room, and is plugged into a USB serial interface on a raspberry pi. The pi does many things, and runs a (Pythonic) TCP/IP server that deals with custom commands. It will run a state machine to keep track of what the box is up to, and will speak to a gui running on the spectrometer computer. This CLI is just the glue in the works to enable the simple parsing of
 what the box is up to. 
-
 
 
 # Usage statement  
@@ -155,6 +154,6 @@ Info about the BVT3000 and the Eurotherm 902s can be found on my personal websit
 Note that the Eurotherm and the BVTs implement a version of the Bisynch protocol over RS232 with 7 data bits, 1 (Even) parity bit, at a maximum speed of 96000 baud. 
 
 # TODO 
-
-Thorough testing. 
+Thorough testing needs to be completely done -- this does work, but look after the devices carefully. 
+Also, #ShouldHaveWrittenItInPerl. 
 
