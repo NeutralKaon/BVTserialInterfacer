@@ -155,7 +155,9 @@ Info about the BVT3000 and the Eurotherm 902s can be found on my personal websit
 
 Note that the Eurotherm and the BVTs implement a version of the Bisynch protocol over RS232 with 7 data bits, 1 (Even) parity bit, at a maximum speed of 96000 baud. 
 
-#Examples in action
+Example use "in the field"
+-----------------
+
 The below were obtained using a BVT3000 without any of the options and the heater off: 
 
 ![Example](./exampleImage.png) 
@@ -169,8 +171,8 @@ pi@rpimon:~ $ BVTserialInterfacer -d /dev/ttyUSB1 -r -g --get-proportional-band 
 ***DPID: 9.400000
 ```
 
-# TODO 
-
+TODO 
+=====
 More testing needs to done to completely sort this out -- this does work, but look after the devices carefully. 
 Also, \#ShouldHaveWrittenItInPerl! 
 
