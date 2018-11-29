@@ -171,7 +171,7 @@ struct sp_port* open_and_init_port(char* desired_port, struct sp_port *port_choi
             printf("Error opening serial device\n");
             #ifndef DEBUG
                 fprintf(stderr,"Unable to open and initialise serial port %s. Quitting.\n", desired_port); 
-                exit(-1); 
+                exit(EXIT_FAILURE); 
              #else 
                 fprintf(stderr,"WARNING: Error opening serial port %s, attempting to carry on...\n", desired_port); 
             #endif
@@ -188,7 +188,7 @@ void bvt3000_send_command( const char * cmd , struct sp_port *port_choice )
 	ssize_t len;
 
 
-	/* Assemble the string to be send */
+	/* Assemble the string to be sent */
 
 	sprintf( buf, "%c%02d%02d%c%s%c",
              EOT, GROUP_ID, DEVICE_ID, STX, cmd, ETX );
@@ -200,20 +200,21 @@ void bvt3000_send_command( const char * cmd , struct sp_port *port_choice )
 
     enum sp_return error = sp_blocking_write(port_choice, buf, len, SERIAL_WAIT); 
     sp_drain(port_choice); 
-    //sp_nonblocking_write(port_choice, buf, len);  
 
+    #ifdef DEBUG
     if(verboseFlag){
         printf("DEBUG: sent serial string: '"); 
         printArray(buf); 
         printf("'\n"); 
     }
+    #endif 
 
     if (error > SP_OK) { // Check for ACK 
         if(bvt3000_check_ack(port_choice) != OK ) {
             bvt3000_comm_fail(); 
         }
     } else { 
-        printf("Error sending command %s\n", cmd); 
+        fprintf(stderr,"WARNING: Error sending command %s\n", cmd); 
     }
 }
 
