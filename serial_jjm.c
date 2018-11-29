@@ -169,6 +169,12 @@ struct sp_port* open_and_init_port(char* desired_port, struct sp_port *port_choi
         }
         else {
             printf("Error opening serial device\n");
+            #ifndef DEBUG
+                fprintf(stderr,"Unable to open and initialise serial port %s. Quitting.\n", desired_port); 
+                exit(-1); 
+             #else 
+                fprintf(stderr,"WARNING: Error opening serial port %s, attempting to carry on...\n", desired_port); 
+            #endif
         }
     } else {
         printf("Error finding serial device\n");

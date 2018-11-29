@@ -58,15 +58,6 @@ int main(int argc, char **argv){
     /* --- Open device ---*/  
 
     port = open_and_init_port(ai.device_arg, port); 
-    int rV = sp_last_error_code(); 
-    if (rV != 0) { 
-    #ifndef DEBUG
-        fprintf(stderr,"Unable to open and initialise serial port %s. Quitting.\n", ai.device_arg); 
-        return(-1); 
-    #else 
-        fprintf(stderr,"WARNING: Error opening serial port %s, attempting to carry on...\n", ai.device_arg); 
-    #endif
-    }
 
     if (ai.verbose_given) { 
         bool *b=&verboseFlag; 
@@ -100,7 +91,7 @@ int main(int argc, char **argv){
         if(verboseFlag){ printf("Checking heater!\n"); }       
         int result = bvt3000_check_heater(port); 
         if (result == HEATER_OVERHEATING ) {
-            printf("***HCC : FAIL\n"); 
+            fprintf(stderr,"***HCC : FAIL\n"); 
             if(verboseFlag){printf("Disabling heater...\n"); }
             bvt3000_set_heater_state(UNSET,port); 
             fprintf(stderr,"Heater overheating, heater disabled.\n"); 
@@ -368,8 +359,8 @@ int main(int argc, char **argv){
 
     if (ai.verbose_given && (anyErrors == SP_OK) ) { 
         printf("Port %s closed successfully\n", ai.device_arg); 
-    } else { 
-        fprintf(stderr,"Error closing port %s, return code %d", ai.device_arg, anyErrors); 
+    } else if (anyErrors != SP_OK) { 
+        fprintf(stderr,"Error closing port %s, return code %d\n", ai.device_arg, anyErrors); 
     }
     return 0; 
 }
