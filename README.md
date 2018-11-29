@@ -6,7 +6,7 @@ They exist to alter the temperature of samples in spectrometers, from ~77K or be
 
 While you can control what they do with the EDTE command in TopSpin, it requires a license of TopSpin and a Bruker spectrometer. You may wish to use them independently, or alternatively, to hook up the hardware to something more exotic. 
 
-I found myself needing to do exactly this, and with few other available tools that are "lightweight" (and can run easily on a low-cost, low-spec computer such as a Raspberry Pi) decided to create one. 
+I found myself needing to do exactly this, and with few other available tools that are "lightweight" (and can run easily on a low-cost, low-spec computer such as a Raspberry Pi) decided to create one. This code borrows heavily from the excellent Fsc2 by Jens Thoms Toerring, http://users.physik.fu-berlin.de/~jtt/fsc2.phtml. 
 
 # Installation 
 
@@ -153,10 +153,22 @@ Info about the BVT3000 and the Eurotherm 902s can be found on my personal websit
 
 Note that the Eurotherm and the BVTs implement a version of the Bisynch protocol over RS232 with 7 data bits, 1 (Even) parity bit, at a maximum speed of 96000 baud. 
 
+#Examples in action
+The below were obtained using a BVT3000 without any of the options and the heater off: 
 
 ![Example](./exampleImage.png) 
 
+```
+pi@rpimon:~ $ BVTserialInterfacer -d /dev/ttyUSB1 -r -g --get-proportional-band --get-integral-time --get-differential-time
+***TEMP: 294.600000
+***GASR: 535.000000
+***PPID: 89.600000
+***IPID: 56.000000
+***DPID: 9.400000
+```
+
 # TODO 
-Thorough testing needs to be completely done -- this does work, but look after the devices carefully. 
-Also, #ShouldHaveWrittenItInPerl. 
+
+More testing needs to done to completely sort this out -- this does work, but look after the devices carefully. 
+Also, \#ShouldHaveWrittenItInPerl! 
 
