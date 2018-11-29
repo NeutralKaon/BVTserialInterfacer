@@ -155,7 +155,7 @@ Note that the Eurotherm and the BVTs implement a version of the Bisynch protocol
 
 ![Example usage][Example] 
 
-[Example]: 
+[Example]:(./exampleImage.png) 
 
 # TODO 
 Thorough testing needs to be completely done -- this does work, but look after the devices carefully. 
