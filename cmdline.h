@@ -62,8 +62,6 @@ struct gengetopt_args_info
   float set_heater_power_arg;	/**< @brief Set the current heater power (as a percentage).  */
   char * set_heater_power_orig;	/**< @brief Set the current heater power (as a percentage) original value given at command line.  */
   const char *set_heater_power_help; /**< @brief Set the current heater power (as a percentage) help description.  */
-  int check_sensor_break_flag;	/**< @brief Check to see if the Thermocouples are broken (default=off).  */
-  const char *check_sensor_break_help; /**< @brief Check to see if the Thermocouples are broken help description.  */
   int check_heater_flag;	/**< @brief Check to see if the heater is overheating (default=off).  */
   const char *check_heater_help; /**< @brief Check to see if the heater is overheating help description.  */
   int get_gas_flow_rate_flag;	/**< @brief Return the gas flow rate in l/hr (default=off).  */
@@ -118,6 +116,8 @@ struct gengetopt_args_info
   const char *get_eurotherm_status_help; /**< @brief Get the status of the Eurotherm controller (alarming or not) help description.  */
   int status_all_flag;	/**< @brief Return the status of everything that is a status (default=off).  */
   const char *status_all_help; /**< @brief Return the status of everything that is a status help description.  */
+  int check_sensor_break_flag;	/**< @brief Check to see if the Thermocouples are broken (default=off).  */
+  const char *check_sensor_break_help; /**< @brief Check to see if the Thermocouples are broken help description.  */
   
   unsigned int help_given ;	/**< @brief Whether help was given.  */
   unsigned int version_given ;	/**< @brief Whether version was given.  */
@@ -131,7 +131,6 @@ struct gengetopt_args_info
   unsigned int get_heater_power_limit_given ;	/**< @brief Whether get-heater-power-limit was given.  */
   unsigned int get_heater_power_given ;	/**< @brief Whether get-heater-power was given.  */
   unsigned int set_heater_power_given ;	/**< @brief Whether set-heater-power was given.  */
-  unsigned int check_sensor_break_given ;	/**< @brief Whether check-sensor-break was given.  */
   unsigned int check_heater_given ;	/**< @brief Whether check-heater was given.  */
   unsigned int get_gas_flow_rate_given ;	/**< @brief Whether get-gas-flow-rate was given.  */
   unsigned int set_gas_flow_rate_given ;	/**< @brief Whether set-gas-flow-rate was given.  */
@@ -155,6 +154,7 @@ struct gengetopt_args_info
   unsigned int lock_keypad_given ;	/**< @brief Whether lock-keypad was given.  */
   unsigned int get_eurotherm_status_given ;	/**< @brief Whether get-eurotherm-status was given.  */
   unsigned int status_all_given ;	/**< @brief Whether status-all was given.  */
+  unsigned int check_sensor_break_given ;	/**< @brief Whether check-sensor-break was given.  */
 
 } ;
 

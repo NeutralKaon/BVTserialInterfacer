@@ -88,6 +88,7 @@ int main(int argc, char **argv){
         bool result = eurotherm902s_check_sensor_break(port); 
         if (result == SET) { 
             fprintf(stderr,"Warning: PT100/Thermocouple sensor break on device.\n"); 
+            fprintf(stderr,"***SBC : FAIL\n"); 
         } else{
             printf("***SBC : OK\n"); 
         }

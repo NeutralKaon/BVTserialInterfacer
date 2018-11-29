@@ -25,7 +25,7 @@
 
 #include "cmdline.h"
 
-const char *gengetopt_args_info_purpose = "This dodgy command line tool acts as a command line interfacer with the Bruker\nBVT3000 NMR heater unit that uses a Eurotherm 902s PID controller. \n\nIt provides many silly, but hopefully useful, command line commands to check\nhardware status, measure things, and so on. Everything is either dreadfully\nverbose (with the -v switch), or alternatively consists of: \n'***XXXX: VALUE', where 'XXXX' depends on the command requested (e.g. TEMP) and\n'VALUE' is the return of that command. See the documentation (that I haven't\nyet written...) for more details. \n";
+const char *gengetopt_args_info_purpose = "This dodgy command line tool acts as a command line interfacer with the Bruker\nBVT3000 NMR heater unit that uses a Eurotherm 902s PID controller. \n\nIt provides many silly, but hopefully useful, command line commands to check\nhardware status, measure things, and so on. Everything is either dreadfully\nverbose (with the -v switch), or alternatively consists of: \n'***XXXX: VALUE', where 'XXXX' depends on the command requested (e.g. TEMP) and\n'VALUE' is the return of that command. See the documentation (that I haven't\ncompletely yet written...) for more details. \n";
 
 const char *gengetopt_args_info_usage = "Usage: -d /path/to/serialPort command [command argument]";
 
@@ -50,7 +50,6 @@ const char *gengetopt_args_info_help[] = {
   "      --get-heater-power-limit  Get the heater power limit  (default=off)",
   "      --get-heater-power        Get the current heater power (as a percentage)\n                                  (default=off)",
   "      --set-heater-power=FLOAT  Set the current heater power (as a percentage)",
-  "      --check-sensor-break      Check to see if the Thermocouples are broken\n                                  (default=off)",
   "  -X, --check-heater            Check to see if the heater is overheating\n                                  (default=off)",
   "\nGas flow controls:",
   "  -g, --get-gas-flow-rate       Return the gas flow rate in l/hr  (default=off)",
@@ -79,6 +78,7 @@ const char *gengetopt_args_info_help[] = {
   "      --lock-keypad=INT         Unlock (1) or lock (0) the Eurotherm keypad",
   "      --get-eurotherm-status    Get the status of the Eurotherm controller\n                                  (alarming or not)  (default=off)",
   "      --status-all              Return the status of everything that is a\n                                  status  (default=off)",
+  "      --check-sensor-break      Check to see if the Thermocouples are broken\n                                  (default=off)",
   "\n Example invocation to read temperature (K), and gas flow rate (l/hours): \n\n BVTserialInterfacer -d /dev/ttyUSB0 -r --get-gas-flow-rate\n",
     0
 };
@@ -120,7 +120,6 @@ void clear_given (struct gengetopt_args_info *args_info)
   args_info->get_heater_power_limit_given = 0 ;
   args_info->get_heater_power_given = 0 ;
   args_info->set_heater_power_given = 0 ;
-  args_info->check_sensor_break_given = 0 ;
   args_info->check_heater_given = 0 ;
   args_info->get_gas_flow_rate_given = 0 ;
   args_info->set_gas_flow_rate_given = 0 ;
@@ -144,6 +143,7 @@ void clear_given (struct gengetopt_args_info *args_info)
   args_info->lock_keypad_given = 0 ;
   args_info->get_eurotherm_status_given = 0 ;
   args_info->status_all_given = 0 ;
+  args_info->check_sensor_break_given = 0 ;
 }
 
 static
@@ -161,7 +161,6 @@ void clear_args (struct gengetopt_args_info *args_info)
   args_info->get_heater_power_limit_flag = 0;
   args_info->get_heater_power_flag = 0;
   args_info->set_heater_power_orig = NULL;
-  args_info->check_sensor_break_flag = 0;
   args_info->check_heater_flag = 0;
   args_info->get_gas_flow_rate_flag = 0;
   args_info->set_gas_flow_rate_orig = NULL;
@@ -185,6 +184,7 @@ void clear_args (struct gengetopt_args_info *args_info)
   args_info->lock_keypad_orig = NULL;
   args_info->get_eurotherm_status_flag = 0;
   args_info->status_all_flag = 0;
+  args_info->check_sensor_break_flag = 0;
   
 }
 
@@ -205,30 +205,30 @@ void init_args_info(struct gengetopt_args_info *args_info)
   args_info->get_heater_power_limit_help = gengetopt_args_info_help[13] ;
   args_info->get_heater_power_help = gengetopt_args_info_help[14] ;
   args_info->set_heater_power_help = gengetopt_args_info_help[15] ;
-  args_info->check_sensor_break_help = gengetopt_args_info_help[16] ;
-  args_info->check_heater_help = gengetopt_args_info_help[17] ;
-  args_info->get_gas_flow_rate_help = gengetopt_args_info_help[19] ;
-  args_info->set_gas_flow_rate_help = gengetopt_args_info_help[20] ;
-  args_info->read_temperature_help = gengetopt_args_info_help[22] ;
-  args_info->set_temperature_setpoint_help = gengetopt_args_info_help[23] ;
-  args_info->get_temperature_setpoint_help = gengetopt_args_info_help[24] ;
-  args_info->get_ln2_heater_state_help = gengetopt_args_info_help[26] ;
-  args_info->set_ln2_heater_state_help = gengetopt_args_info_help[27] ;
-  args_info->get_ln2_heater_power_help = gengetopt_args_info_help[28] ;
-  args_info->set_ln2_heater_power_help = gengetopt_args_info_help[29] ;
-  args_info->check_ln2_heater_help = gengetopt_args_info_help[30] ;
-  args_info->enable_PID_control_help = gengetopt_args_info_help[32] ;
-  args_info->manual_mode_help = gengetopt_args_info_help[33] ;
-  args_info->get_mode_help = gengetopt_args_info_help[34] ;
-  args_info->set_proportional_band_help = gengetopt_args_info_help[35] ;
-  args_info->get_proportional_band_help = gengetopt_args_info_help[36] ;
-  args_info->set_integral_time_help = gengetopt_args_info_help[37] ;
-  args_info->get_integral_time_help = gengetopt_args_info_help[38] ;
-  args_info->set_differential_time_help = gengetopt_args_info_help[39] ;
-  args_info->get_differential_time_help = gengetopt_args_info_help[40] ;
-  args_info->lock_keypad_help = gengetopt_args_info_help[42] ;
-  args_info->get_eurotherm_status_help = gengetopt_args_info_help[43] ;
-  args_info->status_all_help = gengetopt_args_info_help[44] ;
+  args_info->check_heater_help = gengetopt_args_info_help[16] ;
+  args_info->get_gas_flow_rate_help = gengetopt_args_info_help[18] ;
+  args_info->set_gas_flow_rate_help = gengetopt_args_info_help[19] ;
+  args_info->read_temperature_help = gengetopt_args_info_help[21] ;
+  args_info->set_temperature_setpoint_help = gengetopt_args_info_help[22] ;
+  args_info->get_temperature_setpoint_help = gengetopt_args_info_help[23] ;
+  args_info->get_ln2_heater_state_help = gengetopt_args_info_help[25] ;
+  args_info->set_ln2_heater_state_help = gengetopt_args_info_help[26] ;
+  args_info->get_ln2_heater_power_help = gengetopt_args_info_help[27] ;
+  args_info->set_ln2_heater_power_help = gengetopt_args_info_help[28] ;
+  args_info->check_ln2_heater_help = gengetopt_args_info_help[29] ;
+  args_info->enable_PID_control_help = gengetopt_args_info_help[31] ;
+  args_info->manual_mode_help = gengetopt_args_info_help[32] ;
+  args_info->get_mode_help = gengetopt_args_info_help[33] ;
+  args_info->set_proportional_band_help = gengetopt_args_info_help[34] ;
+  args_info->get_proportional_band_help = gengetopt_args_info_help[35] ;
+  args_info->set_integral_time_help = gengetopt_args_info_help[36] ;
+  args_info->get_integral_time_help = gengetopt_args_info_help[37] ;
+  args_info->set_differential_time_help = gengetopt_args_info_help[38] ;
+  args_info->get_differential_time_help = gengetopt_args_info_help[39] ;
+  args_info->lock_keypad_help = gengetopt_args_info_help[41] ;
+  args_info->get_eurotherm_status_help = gengetopt_args_info_help[42] ;
+  args_info->status_all_help = gengetopt_args_info_help[43] ;
+  args_info->check_sensor_break_help = gengetopt_args_info_help[44] ;
   
 }
 
@@ -378,8 +378,6 @@ cmdline_parser_dump(FILE *outfile, struct gengetopt_args_info *args_info)
     write_into_file(outfile, "get-heater-power", 0, 0 );
   if (args_info->set_heater_power_given)
     write_into_file(outfile, "set-heater-power", args_info->set_heater_power_orig, 0);
-  if (args_info->check_sensor_break_given)
-    write_into_file(outfile, "check-sensor-break", 0, 0 );
   if (args_info->check_heater_given)
     write_into_file(outfile, "check-heater", 0, 0 );
   if (args_info->get_gas_flow_rate_given)
@@ -426,6 +424,8 @@ cmdline_parser_dump(FILE *outfile, struct gengetopt_args_info *args_info)
     write_into_file(outfile, "get-eurotherm-status", 0, 0 );
   if (args_info->status_all_given)
     write_into_file(outfile, "status-all", 0, 0 );
+  if (args_info->check_sensor_break_given)
+    write_into_file(outfile, "check-sensor-break", 0, 0 );
   
 
   i = EXIT_SUCCESS;
@@ -724,7 +724,6 @@ cmdline_parser_internal (
         { "get-heater-power-limit",	0, NULL, 0 },
         { "get-heater-power",	0, NULL, 0 },
         { "set-heater-power",	1, NULL, 0 },
-        { "check-sensor-break",	0, NULL, 0 },
         { "check-heater",	0, NULL, 'X' },
         { "get-gas-flow-rate",	0, NULL, 'g' },
         { "set-gas-flow-rate",	1, NULL, 's' },
@@ -748,6 +747,7 @@ cmdline_parser_internal (
         { "lock-keypad",	1, NULL, 0 },
         { "get-eurotherm-status",	0, NULL, 0 },
         { "status-all",	0, NULL, 0 },
+        { "check-sensor-break",	0, NULL, 0 },
         { 0,  0, 0, 0 }
       };
 
@@ -959,18 +959,6 @@ cmdline_parser_internal (
               goto failure;
           
           }
-          /* Check to see if the Thermocouples are broken.  */
-          else if (strcmp (long_options[option_index].name, "check-sensor-break") == 0)
-          {
-          
-          
-            if (update_arg((void *)&(args_info->check_sensor_break_flag), 0, &(args_info->check_sensor_break_given),
-                &(local_args_info.check_sensor_break_given), optarg, 0, 0, ARG_FLAG,
-                check_ambiguity, override, 1, 0, "check-sensor-break", '-',
-                additional_error))
-              goto failure;
-          
-          }
           /* Set the temperature setpoint.  */
           else if (strcmp (long_options[option_index].name, "set-temperature-setpoint") == 0)
           {
@@ -1173,6 +1161,18 @@ cmdline_parser_internal (
             if (update_arg((void *)&(args_info->status_all_flag), 0, &(args_info->status_all_given),
                 &(local_args_info.status_all_given), optarg, 0, 0, ARG_FLAG,
                 check_ambiguity, override, 1, 0, "status-all", '-',
+                additional_error))
+              goto failure;
+          
+          }
+          /* Check to see if the Thermocouples are broken.  */
+          else if (strcmp (long_options[option_index].name, "check-sensor-break") == 0)
+          {
+          
+          
+            if (update_arg((void *)&(args_info->check_sensor_break_flag), 0, &(args_info->check_sensor_break_given),
+                &(local_args_info.check_sensor_break_given), optarg, 0, 0, ARG_FLAG,
+                check_ambiguity, override, 1, 0, "check-sensor-break", '-',
                 additional_error))
               goto failure;
           
