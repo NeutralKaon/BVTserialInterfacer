@@ -9,7 +9,8 @@ While you can control what they do with the EDTE command in TopSpin, it requires
 I found myself needing to do exactly this, and with few other available tools that are "lightweight" (and can run easily on a low-cost, low-spec computer such as a Raspberry Pi) decided to create one. This code borrows heavily from the excellent Fsc2 by Jens Thoms Toerring, http://users.physik.fu-berlin.de/~jtt/fsc2.phtml, which is a free (GPL'd) EPR spectrometer software.  
 
 
-# Installation 
+Installation
+=======
 
 This code relies upon libserialport, a cross-platform serial library that works on essentially all popular OSes. Either `apt-get install libserialport` it, or download and install the code in the usual way. 
 After that, `make && sudo make install`. Note that if you are a (mad) developer and you want to see the hex that is sent and received from your device, `make debug`. This also requires GNU gengetopt as a dependency (or edit the Makefile). 
