@@ -6,7 +6,8 @@ They exist to alter the temperature of samples in spectrometers, from ~77K or be
 
 While you can control what they do with the EDTE command in TopSpin, it requires a license of TopSpin and a Bruker spectrometer. You may wish to use them independently, or alternatively, to hook up the hardware to something more exotic. 
 
-I found myself needing to do exactly this, and with few other available tools that are "lightweight" (and can run easily on a low-cost, low-spec computer such as a Raspberry Pi) decided to create one. This code borrows heavily from the excellent Fsc2 by Jens Thoms Toerring, http://users.physik.fu-berlin.de/~jtt/fsc2.phtml. 
+I found myself needing to do exactly this, and with few other available tools that are "lightweight" (and can run easily on a low-cost, low-spec computer such as a Raspberry Pi) decided to create one. This code borrows heavily from the excellent Fsc2 by Jens Thoms Toerring, http://users.physik.fu-berlin.de/~jtt/fsc2.phtml, which is a free (GPL'd) EPR spectrometer software.  
+
 
 # Installation 
 
