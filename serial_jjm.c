@@ -187,14 +187,13 @@ void bvt3000_send_command( const char * cmd , struct sp_port *port_choice )
 	char buf[ 100 ];
 	ssize_t len;
 
+    assert(sizeof cmd < 70); 
 
 	/* Assemble the string to be sent */
 
 	sprintf( buf, "%c%02d%02d%c%s%c",
              EOT, GROUP_ID, DEVICE_ID, STX, cmd, ETX );
 	len = bvt3000_add_bcc( ( unsigned char * ) buf + 6 ) + 6;
-
-    assert(buf[ sizeof buf - 1] == ETX); 
 
 	/* Send string and check for ACK */
 
@@ -224,11 +223,14 @@ size_t  bvt3000_add_bcc( unsigned char * data )
 	unsigned char bcc = *data++;
 
 
-    while ( *data )
-	{
+	while ( *data != ETX ) {
 		bcc ^= *data++;
 		len++;
-	}
+	} 
+    /* Append the last ETX */
+    bcc ^= *data++; 
+    len++; 
+
 
 	/* Append the resulting BCC and return the total length */
 
