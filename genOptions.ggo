@@ -1,9 +1,9 @@
 package "SerialInterfacer"
-version "v1.0, Nov. 2018"
+version "v1.1, Nov. 2018"
 purpose "This dodgy command line tool acts as a command line interfacer with the Bruker BVT3000 NMR heater unit that uses a Eurotherm 902s PID controller. 
 
 It provides many silly, but hopefully useful, command line commands to check hardware status, measure things, and so on. Everything is either dreadfully verbose (with the -v switch), or alternatively consists of: 
-'***XXXX: VALUE', where 'XXXX' depends on the command requested (e.g. TEMP) and 'VALUE' is the return of that command. See the documentation (that I haven't completely yet written...) for more details. 
+'***XXXX: VALUE', where 'XXXX' depends on the command requested (e.g. TEMP) and 'VALUE' is the return of that command. See the documentation (that I haven't completely yet written...) for more details.  Further documentation is available with the --full-help option.\n
 "
 text "\n Written by Jack J. Miller, University of Oxford, heavily ''inspired by'' code from Fsc2, a free spectrometer driving software, written by Jens Thoms Toerring. \n
 Licensed under under the terms of the GNU General Public License, v3, or at your choice any later license.\n
@@ -24,8 +24,8 @@ option "heater-on" - "Turn on the heater (Be careful!)" flag off
 option "heater-off" O "Turn the heater off" flag off 
 text "\n"
 option "get-heater-state" G "See if the heater is on or off" flag off 
-option "set-heater-power-limit" - "Live dangerously by increasing the maximum heater power (a percentage between 0/100)" optional float 
-option "get-heater-power-limit" - "Get the heater power limit" flag off 
+option "set-heater-power-limit" - "Live dangerously by increasing the maximum heater power (a percentage between 0/100)" optional float  hidden
+option "get-heater-power-limit" - "Get the heater power limit" flag off hidden
 option "get-heater-power" - "Get the current heater power (as a percentage)" flag off 
 option "set-heater-power" - "Set the current heater power (as a percentage)" optional float 
 option "check-heater" X "Check to see if the heater is overheating" flag off
@@ -44,27 +44,33 @@ option "get-temperature-setpoint" R "Get the current temperature setpoint" flag 
 
 #LN2
 section "Liquid Nitrogen methods (NB: you need the optional N2 evaporator)"
-option "get-ln2-heater-state" - "Get the LN2 heater state (on/off)" flag off 
-option "set-ln2-heater-state" - "Turn on/off the LN2 heater (1=on)" optional int
-option "get-ln2-heater-power" - "Get the LN2 heater power" flag off 
-option "set-ln2-heater-power" - "Set the LN2 heater power (as a percentage)" optional float 
-option "check-ln2-heater" - "Check the LN2 tank to see if it is okay, needs a refil, or is empty" flag off
+option "get-ln2-heater-state" - "Get the LN2 heater state (on/off)" flag off hidden
+option "set-ln2-heater-state" - "Turn on/off the LN2 heater (1=on)" optional int hidden
+option "get-ln2-heater-power" - "Get the LN2 heater power" flag off hidden
+option "set-ln2-heater-power" - "Set the LN2 heater power (as a percentage)" optional float  hidden
+option "check-ln2-heater" - "Check the LN2 tank to see if it is okay, needs a refil, or is empty" flag off hidden
 
 section "PID control" 
-option "enable-PID-control" E "Enable the PID control of temperature to the setpoint" flag off 
-option "manual-mode" M "Set the device into manual heater power mode" flag off 
-option "get-mode" - "Return the current PID / Manual control mode" flag off
-option "set-proportional-band" - "Set the P part of PID" optional float 
-option "get-proportional-band" - "Get the P part of PID"  flag off 
-option "set-integral-time" - "Set the I part of PID" optional float 
-option "get-integral-time" - "Get the I part of PID" flag off 
-option "set-differential-time" - "Set the D part of PID" optional float 
-option "get-differential-time" - "Get the D in the PID" flag off
+option "enable-PID-control" E "Enable the PID control of temperature to the setpoint" flag off hidden
+option "manual-mode" M "Set the device into manual heater power mode" flag off hidden
+option "get-mode" - "Return the current PID / Manual control mode\n" flag off hidden
+option "set-proportional-band" - "Set the P part of PID" optional float hidden
+option "get-proportional-band" - "Get the P part of PID"  flag off hidden
+option "set-integral-time" - "Set the I part of PID" optional float hidden
+option "get-integral-time" - "Get the I part of PID" flag off hidden
+option "set-differential-time" - "Set the D part of PID" optional float hidden 
+option "get-differential-time" - "Get the D in the PID\n" flag off hidden
+option "get-high-cutback" - "Get the high cutback value" flag off hidden
+option "set-high-cutback" - "Set the high cutback value" optional float hidden
+option "get-low-cutback" - "Get the low cutback value" flag off hidden 
+option "set-low-cutback" - "Set the low cutback value" optional float hidden
+option "get-adaptive-tune-level" - "Get the adaptive tune level (K)" flag off hidden
+option "set-adaptive-tune-level" - "Set the adaptive tune level (K)" optional float hidden
 
 
 #Misc 
 section "Misc. methods"
-option "lock-keypad" - "Unlock (1) or lock (0) the Eurotherm keypad" optional int
+option "lock-keypad" - "Unlock (1) or lock (0) the Eurotherm keypad" optional int hidden
 option "get-eurotherm-status" - "Get the status of the Eurotherm controller (alarming or not)" flag off
 option "status-all" - "Return the status of everything that is a status" flag off
 option "check-sensor-break" - "Check to see if the Thermocouples are broken" flag off

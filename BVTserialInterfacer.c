@@ -351,6 +351,44 @@ int main(int argc, char **argv){
         }
     }
 
+    //Get high cutback value 
+    if(ai.get_high_cutback_given){
+        if(verboseFlag) {printf("Getting high cutback!\n"); }
+        double result = eurotherm902s_get_cutback_high(port); 
+        printf("***HCUT: %lf\n", result); 
+    }
+    
+    //Set high cutback value 
+    if(ai.set_high_cutback_given){
+        if(verboseFlag) {printf("Setting high cutback to %lf!\n", ai.set_high_cutback_arg); }
+        eurotherm902s_set_cutback_high((double) ai.set_high_cutback_arg, port); 
+    }
+    
+    //Get low cutback value 
+    if(ai.get_low_cutback_given){
+        if(verboseFlag) {printf("Getting low cutback!\n"); }
+        double result = eurotherm902s_get_cutback_low(port); 
+        printf("***LCUT: %lf\n", result); 
+    }
+
+    //Set low cutback value 
+    if(ai.set_low_cutback_given){
+        if(verboseFlag) {printf("Setting low cutback to %lf!\n", ai.set_low_cutback_arg); }
+        eurotherm902s_set_cutback_low((double) ai.set_low_cutback_arg, port); 
+    }
+
+    //Get adaptive tune value in K
+    if(ai.get_adaptive_tune_level_given){
+        if(verboseFlag) { printf("Getting adaptive tune!\n"); } 
+        double result = eurotherm902s_get_adaptive_tune_trigger(port); 
+        printf("***ADTR: %lf\n", result); 
+    }
+
+    //Set adaptive tune value in K
+    if(ai.set_adaptive_tune_level_given){
+        if(verboseFlag) {printf("Setting adaptive tune to %lf!\n", ai.set_adaptive_tune_level_arg); }
+        eurotherm902s_set_adaptive_tune_trigger((double) ai.set_adaptive_tune_level_arg, port); 
+    }
 
 
     /*------------------------------------------------------------------------*/

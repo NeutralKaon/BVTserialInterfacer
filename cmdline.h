@@ -31,13 +31,14 @@ extern "C" {
 
 #ifndef CMDLINE_PARSER_VERSION
 /** @brief the program version */
-#define CMDLINE_PARSER_VERSION "v1.0, Nov. 2018"
+#define CMDLINE_PARSER_VERSION "v1.1, Nov. 2018"
 #endif
 
 /** @brief Where the command line options are stored */
 struct gengetopt_args_info
 {
   const char *help_help; /**< @brief Print help and exit help description.  */
+  const char *full_help_help; /**< @brief Print help, including hidden options, and exit help description.  */
   const char *version_help; /**< @brief Print version and exit help description.  */
   int verbose_flag;	/**< @brief Debugging verbosity (default=off).  */
   const char *verbose_help; /**< @brief Debugging verbosity help description.  */
@@ -92,8 +93,10 @@ struct gengetopt_args_info
   const char *enable_PID_control_help; /**< @brief Enable the PID control of temperature to the setpoint help description.  */
   int manual_mode_flag;	/**< @brief Set the device into manual heater power mode (default=off).  */
   const char *manual_mode_help; /**< @brief Set the device into manual heater power mode help description.  */
-  int get_mode_flag;	/**< @brief Return the current PID / Manual control mode (default=off).  */
-  const char *get_mode_help; /**< @brief Return the current PID / Manual control mode help description.  */
+  int get_mode_flag;	/**< @brief Return the current PID / Manual control mode
+ (default=off).  */
+  const char *get_mode_help; /**< @brief Return the current PID / Manual control mode
+ help description.  */
   float set_proportional_band_arg;	/**< @brief Set the P part of PID.  */
   char * set_proportional_band_orig;	/**< @brief Set the P part of PID original value given at command line.  */
   const char *set_proportional_band_help; /**< @brief Set the P part of PID help description.  */
@@ -107,8 +110,25 @@ struct gengetopt_args_info
   float set_differential_time_arg;	/**< @brief Set the D part of PID.  */
   char * set_differential_time_orig;	/**< @brief Set the D part of PID original value given at command line.  */
   const char *set_differential_time_help; /**< @brief Set the D part of PID help description.  */
-  int get_differential_time_flag;	/**< @brief Get the D in the PID (default=off).  */
-  const char *get_differential_time_help; /**< @brief Get the D in the PID help description.  */
+  int get_differential_time_flag;	/**< @brief Get the D in the PID
+ (default=off).  */
+  const char *get_differential_time_help; /**< @brief Get the D in the PID
+ help description.  */
+  int get_high_cutback_flag;	/**< @brief Get the high cutback value (default=off).  */
+  const char *get_high_cutback_help; /**< @brief Get the high cutback value help description.  */
+  float set_high_cutback_arg;	/**< @brief Set the high cutback value.  */
+  char * set_high_cutback_orig;	/**< @brief Set the high cutback value original value given at command line.  */
+  const char *set_high_cutback_help; /**< @brief Set the high cutback value help description.  */
+  int get_low_cutback_flag;	/**< @brief Get the low cutback value (default=off).  */
+  const char *get_low_cutback_help; /**< @brief Get the low cutback value help description.  */
+  float set_low_cutback_arg;	/**< @brief Set the low cutback value.  */
+  char * set_low_cutback_orig;	/**< @brief Set the low cutback value original value given at command line.  */
+  const char *set_low_cutback_help; /**< @brief Set the low cutback value help description.  */
+  int get_adaptive_tune_level_flag;	/**< @brief Get the adaptive tune level (K) (default=off).  */
+  const char *get_adaptive_tune_level_help; /**< @brief Get the adaptive tune level (K) help description.  */
+  float set_adaptive_tune_level_arg;	/**< @brief Set the adaptive tune level (K).  */
+  char * set_adaptive_tune_level_orig;	/**< @brief Set the adaptive tune level (K) original value given at command line.  */
+  const char *set_adaptive_tune_level_help; /**< @brief Set the adaptive tune level (K) help description.  */
   int lock_keypad_arg;	/**< @brief Unlock (1) or lock (0) the Eurotherm keypad.  */
   char * lock_keypad_orig;	/**< @brief Unlock (1) or lock (0) the Eurotherm keypad original value given at command line.  */
   const char *lock_keypad_help; /**< @brief Unlock (1) or lock (0) the Eurotherm keypad help description.  */
@@ -120,6 +140,7 @@ struct gengetopt_args_info
   const char *check_sensor_break_help; /**< @brief Check to see if the Thermocouples are broken help description.  */
   
   unsigned int help_given ;	/**< @brief Whether help was given.  */
+  unsigned int full_help_given ;	/**< @brief Whether full-help was given.  */
   unsigned int version_given ;	/**< @brief Whether version was given.  */
   unsigned int verbose_given ;	/**< @brief Whether verbose was given.  */
   unsigned int device_given ;	/**< @brief Whether device was given.  */
@@ -151,6 +172,12 @@ struct gengetopt_args_info
   unsigned int get_integral_time_given ;	/**< @brief Whether get-integral-time was given.  */
   unsigned int set_differential_time_given ;	/**< @brief Whether set-differential-time was given.  */
   unsigned int get_differential_time_given ;	/**< @brief Whether get-differential-time was given.  */
+  unsigned int get_high_cutback_given ;	/**< @brief Whether get-high-cutback was given.  */
+  unsigned int set_high_cutback_given ;	/**< @brief Whether set-high-cutback was given.  */
+  unsigned int get_low_cutback_given ;	/**< @brief Whether get-low-cutback was given.  */
+  unsigned int set_low_cutback_given ;	/**< @brief Whether set-low-cutback was given.  */
+  unsigned int get_adaptive_tune_level_given ;	/**< @brief Whether get-adaptive-tune-level was given.  */
+  unsigned int set_adaptive_tune_level_given ;	/**< @brief Whether set-adaptive-tune-level was given.  */
   unsigned int lock_keypad_given ;	/**< @brief Whether lock-keypad was given.  */
   unsigned int get_eurotherm_status_given ;	/**< @brief Whether get-eurotherm-status was given.  */
   unsigned int status_all_given ;	/**< @brief Whether status-all was given.  */
@@ -176,6 +203,8 @@ extern const char *gengetopt_args_info_usage;
 extern const char *gengetopt_args_info_description;
 /** @brief all the lines making the help output */
 extern const char *gengetopt_args_info_help[];
+/** @brief all the lines making the full help output (including hidden options) */
+extern const char *gengetopt_args_info_full_help[];
 
 /**
  * The command line parser
@@ -237,6 +266,10 @@ int cmdline_parser_file_save(const char *filename,
  * Print the help
  */
 void cmdline_parser_print_help(void);
+/**
+ * Print the full help (including hidden options)
+ */
+void cmdline_parser_print_full_help(void);
 /**
  * Print the version
  */

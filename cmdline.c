@@ -25,7 +25,7 @@
 
 #include "cmdline.h"
 
-const char *gengetopt_args_info_purpose = "This dodgy command line tool acts as a command line interfacer with the Bruker\nBVT3000 NMR heater unit that uses a Eurotherm 902s PID controller. \n\nIt provides many silly, but hopefully useful, command line commands to check\nhardware status, measure things, and so on. Everything is either dreadfully\nverbose (with the -v switch), or alternatively consists of: \n'***XXXX: VALUE', where 'XXXX' depends on the command requested (e.g. TEMP) and\n'VALUE' is the return of that command. See the documentation (that I haven't\ncompletely yet written...) for more details. \n";
+const char *gengetopt_args_info_purpose = "This dodgy command line tool acts as a command line interfacer with the Bruker\nBVT3000 NMR heater unit that uses a Eurotherm 902s PID controller. \n\nIt provides many silly, but hopefully useful, command line commands to check\nhardware status, measure things, and so on. Everything is either dreadfully\nverbose (with the -v switch), or alternatively consists of: \n'***XXXX: VALUE', where 'XXXX' depends on the command requested (e.g. TEMP) and\n'VALUE' is the return of that command. See the documentation (that I haven't\ncompletely yet written...) for more details.  Further documentation is\navailable with the --full-help option.\n\n";
 
 const char *gengetopt_args_info_usage = "Usage: -d /path/to/serialPort command [command argument]";
 
@@ -33,8 +33,9 @@ const char *gengetopt_args_info_versiontext = "";
 
 const char *gengetopt_args_info_description = "For variable temperature NMR experiments.";
 
-const char *gengetopt_args_info_help[] = {
+const char *gengetopt_args_info_full_help[] = {
   "  -h, --help                    Print help and exit",
+  "      --full-help               Print help, including hidden options, and exit",
   "  -V, --version                 Print version and exit",
   "\n Written by Jack J. Miller, University of Oxford, heavily ''inspired by'' code\nfrom Fsc2, a free spectrometer driving software, written by Jens Thoms\nToerring. \n\nLicensed under under the terms of the GNU General Public License, v3, or at\nyour choice any later license.\n\nGiven that this software can be used with hardware designed to cool samples to\n77 K or heat them to 1000 K, please particularly note the section of the GPL\ndisclaiming liability!\n",
   "  -v, --verbose                 Debugging verbosity  (default=off)",
@@ -67,13 +68,19 @@ const char *gengetopt_args_info_help[] = {
   "\nPID control:",
   "  -E, --enable-PID-control      Enable the PID control of temperature to the\n                                  setpoint  (default=off)",
   "  -M, --manual-mode             Set the device into manual heater power mode\n                                  (default=off)",
-  "      --get-mode                Return the current PID / Manual control mode\n                                  (default=off)",
+  "      --get-mode                Return the current PID / Manual control mode\n                                    (default=off)",
   "      --set-proportional-band=FLOAT\n                                Set the P part of PID",
   "      --get-proportional-band   Get the P part of PID  (default=off)",
   "      --set-integral-time=FLOAT Set the I part of PID",
   "      --get-integral-time       Get the I part of PID  (default=off)",
   "      --set-differential-time=FLOAT\n                                Set the D part of PID",
-  "      --get-differential-time   Get the D in the PID  (default=off)",
+  "      --get-differential-time   Get the D in the PID\n                                    (default=off)",
+  "      --get-high-cutback        Get the high cutback value  (default=off)",
+  "      --set-high-cutback=FLOAT  Set the high cutback value",
+  "      --get-low-cutback         Get the low cutback value  (default=off)",
+  "      --set-low-cutback=FLOAT   Set the low cutback value",
+  "      --get-adaptive-tune-level Get the adaptive tune level (K)  (default=off)",
+  "      --set-adaptive-tune-level=FLOAT\n                                Set the adaptive tune level (K)",
   "\nMisc. methods:",
   "      --lock-keypad=INT         Unlock (1) or lock (0) the Eurotherm keypad",
   "      --get-eurotherm-status    Get the status of the Eurotherm controller\n                                  (alarming or not)  (default=off)",
@@ -82,6 +89,43 @@ const char *gengetopt_args_info_help[] = {
   "\n Example invocation to read temperature (K), and gas flow rate (l/hours): \n\n BVTserialInterfacer -d /dev/ttyUSB0 -r --get-gas-flow-rate\n",
     0
 };
+
+static void
+init_help_array(void)
+{
+  gengetopt_args_info_help[0] = gengetopt_args_info_full_help[0];
+  gengetopt_args_info_help[1] = gengetopt_args_info_full_help[1];
+  gengetopt_args_info_help[2] = gengetopt_args_info_full_help[2];
+  gengetopt_args_info_help[3] = gengetopt_args_info_full_help[3];
+  gengetopt_args_info_help[4] = gengetopt_args_info_full_help[4];
+  gengetopt_args_info_help[5] = gengetopt_args_info_full_help[5];
+  gengetopt_args_info_help[6] = gengetopt_args_info_full_help[6];
+  gengetopt_args_info_help[7] = gengetopt_args_info_full_help[7];
+  gengetopt_args_info_help[8] = gengetopt_args_info_full_help[8];
+  gengetopt_args_info_help[9] = gengetopt_args_info_full_help[9];
+  gengetopt_args_info_help[10] = gengetopt_args_info_full_help[10];
+  gengetopt_args_info_help[11] = gengetopt_args_info_full_help[11];
+  gengetopt_args_info_help[12] = gengetopt_args_info_full_help[12];
+  gengetopt_args_info_help[13] = gengetopt_args_info_full_help[15];
+  gengetopt_args_info_help[14] = gengetopt_args_info_full_help[16];
+  gengetopt_args_info_help[15] = gengetopt_args_info_full_help[17];
+  gengetopt_args_info_help[16] = gengetopt_args_info_full_help[18];
+  gengetopt_args_info_help[17] = gengetopt_args_info_full_help[19];
+  gengetopt_args_info_help[18] = gengetopt_args_info_full_help[20];
+  gengetopt_args_info_help[19] = gengetopt_args_info_full_help[21];
+  gengetopt_args_info_help[20] = gengetopt_args_info_full_help[22];
+  gengetopt_args_info_help[21] = gengetopt_args_info_full_help[23];
+  gengetopt_args_info_help[22] = gengetopt_args_info_full_help[24];
+  gengetopt_args_info_help[23] = gengetopt_args_info_full_help[47];
+  gengetopt_args_info_help[24] = gengetopt_args_info_full_help[49];
+  gengetopt_args_info_help[25] = gengetopt_args_info_full_help[50];
+  gengetopt_args_info_help[26] = gengetopt_args_info_full_help[51];
+  gengetopt_args_info_help[27] = gengetopt_args_info_full_help[52];
+  gengetopt_args_info_help[28] = 0; 
+  
+}
+
+const char *gengetopt_args_info_help[29];
 
 typedef enum {ARG_NO
   , ARG_FLAG
@@ -109,6 +153,7 @@ static
 void clear_given (struct gengetopt_args_info *args_info)
 {
   args_info->help_given = 0 ;
+  args_info->full_help_given = 0 ;
   args_info->version_given = 0 ;
   args_info->verbose_given = 0 ;
   args_info->device_given = 0 ;
@@ -140,6 +185,12 @@ void clear_given (struct gengetopt_args_info *args_info)
   args_info->get_integral_time_given = 0 ;
   args_info->set_differential_time_given = 0 ;
   args_info->get_differential_time_given = 0 ;
+  args_info->get_high_cutback_given = 0 ;
+  args_info->set_high_cutback_given = 0 ;
+  args_info->get_low_cutback_given = 0 ;
+  args_info->set_low_cutback_given = 0 ;
+  args_info->get_adaptive_tune_level_given = 0 ;
+  args_info->set_adaptive_tune_level_given = 0 ;
   args_info->lock_keypad_given = 0 ;
   args_info->get_eurotherm_status_given = 0 ;
   args_info->status_all_given = 0 ;
@@ -181,6 +232,12 @@ void clear_args (struct gengetopt_args_info *args_info)
   args_info->get_integral_time_flag = 0;
   args_info->set_differential_time_orig = NULL;
   args_info->get_differential_time_flag = 0;
+  args_info->get_high_cutback_flag = 0;
+  args_info->set_high_cutback_orig = NULL;
+  args_info->get_low_cutback_flag = 0;
+  args_info->set_low_cutback_orig = NULL;
+  args_info->get_adaptive_tune_level_flag = 0;
+  args_info->set_adaptive_tune_level_orig = NULL;
   args_info->lock_keypad_orig = NULL;
   args_info->get_eurotherm_status_flag = 0;
   args_info->status_all_flag = 0;
@@ -192,43 +249,50 @@ static
 void init_args_info(struct gengetopt_args_info *args_info)
 {
 
-
-  args_info->help_help = gengetopt_args_info_help[0] ;
-  args_info->version_help = gengetopt_args_info_help[1] ;
-  args_info->verbose_help = gengetopt_args_info_help[3] ;
-  args_info->device_help = gengetopt_args_info_help[5] ;
-  args_info->list_devices_help = gengetopt_args_info_help[6] ;
-  args_info->heater_on_help = gengetopt_args_info_help[8] ;
-  args_info->heater_off_help = gengetopt_args_info_help[9] ;
-  args_info->get_heater_state_help = gengetopt_args_info_help[11] ;
-  args_info->set_heater_power_limit_help = gengetopt_args_info_help[12] ;
-  args_info->get_heater_power_limit_help = gengetopt_args_info_help[13] ;
-  args_info->get_heater_power_help = gengetopt_args_info_help[14] ;
-  args_info->set_heater_power_help = gengetopt_args_info_help[15] ;
-  args_info->check_heater_help = gengetopt_args_info_help[16] ;
-  args_info->get_gas_flow_rate_help = gengetopt_args_info_help[18] ;
-  args_info->set_gas_flow_rate_help = gengetopt_args_info_help[19] ;
-  args_info->read_temperature_help = gengetopt_args_info_help[21] ;
-  args_info->set_temperature_setpoint_help = gengetopt_args_info_help[22] ;
-  args_info->get_temperature_setpoint_help = gengetopt_args_info_help[23] ;
-  args_info->get_ln2_heater_state_help = gengetopt_args_info_help[25] ;
-  args_info->set_ln2_heater_state_help = gengetopt_args_info_help[26] ;
-  args_info->get_ln2_heater_power_help = gengetopt_args_info_help[27] ;
-  args_info->set_ln2_heater_power_help = gengetopt_args_info_help[28] ;
-  args_info->check_ln2_heater_help = gengetopt_args_info_help[29] ;
-  args_info->enable_PID_control_help = gengetopt_args_info_help[31] ;
-  args_info->manual_mode_help = gengetopt_args_info_help[32] ;
-  args_info->get_mode_help = gengetopt_args_info_help[33] ;
-  args_info->set_proportional_band_help = gengetopt_args_info_help[34] ;
-  args_info->get_proportional_band_help = gengetopt_args_info_help[35] ;
-  args_info->set_integral_time_help = gengetopt_args_info_help[36] ;
-  args_info->get_integral_time_help = gengetopt_args_info_help[37] ;
-  args_info->set_differential_time_help = gengetopt_args_info_help[38] ;
-  args_info->get_differential_time_help = gengetopt_args_info_help[39] ;
-  args_info->lock_keypad_help = gengetopt_args_info_help[41] ;
-  args_info->get_eurotherm_status_help = gengetopt_args_info_help[42] ;
-  args_info->status_all_help = gengetopt_args_info_help[43] ;
-  args_info->check_sensor_break_help = gengetopt_args_info_help[44] ;
+  init_help_array(); 
+  args_info->help_help = gengetopt_args_info_full_help[0] ;
+  args_info->full_help_help = gengetopt_args_info_full_help[1] ;
+  args_info->version_help = gengetopt_args_info_full_help[2] ;
+  args_info->verbose_help = gengetopt_args_info_full_help[4] ;
+  args_info->device_help = gengetopt_args_info_full_help[6] ;
+  args_info->list_devices_help = gengetopt_args_info_full_help[7] ;
+  args_info->heater_on_help = gengetopt_args_info_full_help[9] ;
+  args_info->heater_off_help = gengetopt_args_info_full_help[10] ;
+  args_info->get_heater_state_help = gengetopt_args_info_full_help[12] ;
+  args_info->set_heater_power_limit_help = gengetopt_args_info_full_help[13] ;
+  args_info->get_heater_power_limit_help = gengetopt_args_info_full_help[14] ;
+  args_info->get_heater_power_help = gengetopt_args_info_full_help[15] ;
+  args_info->set_heater_power_help = gengetopt_args_info_full_help[16] ;
+  args_info->check_heater_help = gengetopt_args_info_full_help[17] ;
+  args_info->get_gas_flow_rate_help = gengetopt_args_info_full_help[19] ;
+  args_info->set_gas_flow_rate_help = gengetopt_args_info_full_help[20] ;
+  args_info->read_temperature_help = gengetopt_args_info_full_help[22] ;
+  args_info->set_temperature_setpoint_help = gengetopt_args_info_full_help[23] ;
+  args_info->get_temperature_setpoint_help = gengetopt_args_info_full_help[24] ;
+  args_info->get_ln2_heater_state_help = gengetopt_args_info_full_help[26] ;
+  args_info->set_ln2_heater_state_help = gengetopt_args_info_full_help[27] ;
+  args_info->get_ln2_heater_power_help = gengetopt_args_info_full_help[28] ;
+  args_info->set_ln2_heater_power_help = gengetopt_args_info_full_help[29] ;
+  args_info->check_ln2_heater_help = gengetopt_args_info_full_help[30] ;
+  args_info->enable_PID_control_help = gengetopt_args_info_full_help[32] ;
+  args_info->manual_mode_help = gengetopt_args_info_full_help[33] ;
+  args_info->get_mode_help = gengetopt_args_info_full_help[34] ;
+  args_info->set_proportional_band_help = gengetopt_args_info_full_help[35] ;
+  args_info->get_proportional_band_help = gengetopt_args_info_full_help[36] ;
+  args_info->set_integral_time_help = gengetopt_args_info_full_help[37] ;
+  args_info->get_integral_time_help = gengetopt_args_info_full_help[38] ;
+  args_info->set_differential_time_help = gengetopt_args_info_full_help[39] ;
+  args_info->get_differential_time_help = gengetopt_args_info_full_help[40] ;
+  args_info->get_high_cutback_help = gengetopt_args_info_full_help[41] ;
+  args_info->set_high_cutback_help = gengetopt_args_info_full_help[42] ;
+  args_info->get_low_cutback_help = gengetopt_args_info_full_help[43] ;
+  args_info->set_low_cutback_help = gengetopt_args_info_full_help[44] ;
+  args_info->get_adaptive_tune_level_help = gengetopt_args_info_full_help[45] ;
+  args_info->set_adaptive_tune_level_help = gengetopt_args_info_full_help[46] ;
+  args_info->lock_keypad_help = gengetopt_args_info_full_help[48] ;
+  args_info->get_eurotherm_status_help = gengetopt_args_info_full_help[49] ;
+  args_info->status_all_help = gengetopt_args_info_full_help[50] ;
+  args_info->check_sensor_break_help = gengetopt_args_info_full_help[51] ;
   
 }
 
@@ -265,6 +329,15 @@ cmdline_parser_print_help (void)
   print_help_common();
   while (gengetopt_args_info_help[i])
     printf("%s\n", gengetopt_args_info_help[i++]);
+}
+
+void
+cmdline_parser_print_full_help (void)
+{
+  int i = 0;
+  print_help_common();
+  while (gengetopt_args_info_full_help[i])
+    printf("%s\n", gengetopt_args_info_full_help[i++]);
 }
 
 void
@@ -323,6 +396,9 @@ cmdline_parser_release (struct gengetopt_args_info *args_info)
   free_string_field (&(args_info->set_proportional_band_orig));
   free_string_field (&(args_info->set_integral_time_orig));
   free_string_field (&(args_info->set_differential_time_orig));
+  free_string_field (&(args_info->set_high_cutback_orig));
+  free_string_field (&(args_info->set_low_cutback_orig));
+  free_string_field (&(args_info->set_adaptive_tune_level_orig));
   free_string_field (&(args_info->lock_keypad_orig));
   
   
@@ -356,6 +432,8 @@ cmdline_parser_dump(FILE *outfile, struct gengetopt_args_info *args_info)
 
   if (args_info->help_given)
     write_into_file(outfile, "help", 0, 0 );
+  if (args_info->full_help_given)
+    write_into_file(outfile, "full-help", 0, 0 );
   if (args_info->version_given)
     write_into_file(outfile, "version", 0, 0 );
   if (args_info->verbose_given)
@@ -418,6 +496,18 @@ cmdline_parser_dump(FILE *outfile, struct gengetopt_args_info *args_info)
     write_into_file(outfile, "set-differential-time", args_info->set_differential_time_orig, 0);
   if (args_info->get_differential_time_given)
     write_into_file(outfile, "get-differential-time", 0, 0 );
+  if (args_info->get_high_cutback_given)
+    write_into_file(outfile, "get-high-cutback", 0, 0 );
+  if (args_info->set_high_cutback_given)
+    write_into_file(outfile, "set-high-cutback", args_info->set_high_cutback_orig, 0);
+  if (args_info->get_low_cutback_given)
+    write_into_file(outfile, "get-low-cutback", 0, 0 );
+  if (args_info->set_low_cutback_given)
+    write_into_file(outfile, "set-low-cutback", args_info->set_low_cutback_orig, 0);
+  if (args_info->get_adaptive_tune_level_given)
+    write_into_file(outfile, "get-adaptive-tune-level", 0, 0 );
+  if (args_info->set_adaptive_tune_level_given)
+    write_into_file(outfile, "set-adaptive-tune-level", args_info->set_adaptive_tune_level_orig, 0);
   if (args_info->lock_keypad_given)
     write_into_file(outfile, "lock-keypad", args_info->lock_keypad_orig, 0);
   if (args_info->get_eurotherm_status_given)
@@ -713,6 +803,7 @@ cmdline_parser_internal (
 
       static struct option long_options[] = {
         { "help",	0, NULL, 'h' },
+        { "full-help",	0, NULL, 0 },
         { "version",	0, NULL, 'V' },
         { "verbose",	0, NULL, 'v' },
         { "device",	1, NULL, 'd' },
@@ -744,6 +835,12 @@ cmdline_parser_internal (
         { "get-integral-time",	0, NULL, 0 },
         { "set-differential-time",	1, NULL, 0 },
         { "get-differential-time",	0, NULL, 0 },
+        { "get-high-cutback",	0, NULL, 0 },
+        { "set-high-cutback",	1, NULL, 0 },
+        { "get-low-cutback",	0, NULL, 0 },
+        { "set-low-cutback",	1, NULL, 0 },
+        { "get-adaptive-tune-level",	0, NULL, 0 },
+        { "set-adaptive-tune-level",	1, NULL, 0 },
         { "lock-keypad",	1, NULL, 0 },
         { "get-eurotherm-status",	0, NULL, 0 },
         { "status-all",	0, NULL, 0 },
@@ -883,6 +980,12 @@ cmdline_parser_internal (
           break;
 
         case 0:	/* Long option with no short option */
+          if (strcmp (long_options[option_index].name, "full-help") == 0) {
+            cmdline_parser_print_full_help ();
+            cmdline_parser_free (&local_args_info);
+            exit (EXIT_SUCCESS);
+          }
+
           /* List found serial devices for debugging purposes (specify a dummy -d=Path).  */
           if (strcmp (long_options[option_index].name, "list-devices") == 0)
           {
@@ -1037,7 +1140,8 @@ cmdline_parser_internal (
               goto failure;
           
           }
-          /* Return the current PID / Manual control mode.  */
+          /* Return the current PID / Manual control mode
+.  */
           else if (strcmp (long_options[option_index].name, "get-mode") == 0)
           {
           
@@ -1115,7 +1219,8 @@ cmdline_parser_internal (
               goto failure;
           
           }
-          /* Get the D in the PID.  */
+          /* Get the D in the PID
+.  */
           else if (strcmp (long_options[option_index].name, "get-differential-time") == 0)
           {
           
@@ -1123,6 +1228,84 @@ cmdline_parser_internal (
             if (update_arg((void *)&(args_info->get_differential_time_flag), 0, &(args_info->get_differential_time_given),
                 &(local_args_info.get_differential_time_given), optarg, 0, 0, ARG_FLAG,
                 check_ambiguity, override, 1, 0, "get-differential-time", '-',
+                additional_error))
+              goto failure;
+          
+          }
+          /* Get the high cutback value.  */
+          else if (strcmp (long_options[option_index].name, "get-high-cutback") == 0)
+          {
+          
+          
+            if (update_arg((void *)&(args_info->get_high_cutback_flag), 0, &(args_info->get_high_cutback_given),
+                &(local_args_info.get_high_cutback_given), optarg, 0, 0, ARG_FLAG,
+                check_ambiguity, override, 1, 0, "get-high-cutback", '-',
+                additional_error))
+              goto failure;
+          
+          }
+          /* Set the high cutback value.  */
+          else if (strcmp (long_options[option_index].name, "set-high-cutback") == 0)
+          {
+          
+          
+            if (update_arg( (void *)&(args_info->set_high_cutback_arg), 
+                 &(args_info->set_high_cutback_orig), &(args_info->set_high_cutback_given),
+                &(local_args_info.set_high_cutback_given), optarg, 0, 0, ARG_FLOAT,
+                check_ambiguity, override, 0, 0,
+                "set-high-cutback", '-',
+                additional_error))
+              goto failure;
+          
+          }
+          /* Get the low cutback value.  */
+          else if (strcmp (long_options[option_index].name, "get-low-cutback") == 0)
+          {
+          
+          
+            if (update_arg((void *)&(args_info->get_low_cutback_flag), 0, &(args_info->get_low_cutback_given),
+                &(local_args_info.get_low_cutback_given), optarg, 0, 0, ARG_FLAG,
+                check_ambiguity, override, 1, 0, "get-low-cutback", '-',
+                additional_error))
+              goto failure;
+          
+          }
+          /* Set the low cutback value.  */
+          else if (strcmp (long_options[option_index].name, "set-low-cutback") == 0)
+          {
+          
+          
+            if (update_arg( (void *)&(args_info->set_low_cutback_arg), 
+                 &(args_info->set_low_cutback_orig), &(args_info->set_low_cutback_given),
+                &(local_args_info.set_low_cutback_given), optarg, 0, 0, ARG_FLOAT,
+                check_ambiguity, override, 0, 0,
+                "set-low-cutback", '-',
+                additional_error))
+              goto failure;
+          
+          }
+          /* Get the adaptive tune level (K).  */
+          else if (strcmp (long_options[option_index].name, "get-adaptive-tune-level") == 0)
+          {
+          
+          
+            if (update_arg((void *)&(args_info->get_adaptive_tune_level_flag), 0, &(args_info->get_adaptive_tune_level_given),
+                &(local_args_info.get_adaptive_tune_level_given), optarg, 0, 0, ARG_FLAG,
+                check_ambiguity, override, 1, 0, "get-adaptive-tune-level", '-',
+                additional_error))
+              goto failure;
+          
+          }
+          /* Set the adaptive tune level (K).  */
+          else if (strcmp (long_options[option_index].name, "set-adaptive-tune-level") == 0)
+          {
+          
+          
+            if (update_arg( (void *)&(args_info->set_adaptive_tune_level_arg), 
+                 &(args_info->set_adaptive_tune_level_orig), &(args_info->set_adaptive_tune_level_given),
+                &(local_args_info.set_adaptive_tune_level_given), optarg, 0, 0, ARG_FLOAT,
+                check_ambiguity, override, 0, 0,
+                "set-adaptive-tune-level", '-',
                 additional_error))
               goto failure;
           
