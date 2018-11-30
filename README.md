@@ -151,9 +151,9 @@ Pass a device, and a command. Note that all temperatures are always in Kelvin.
 | `***DPID: %lf` | Current D part of PID| `--get-differential-time` | 
 
 # More Information 
-Info about the BVT3000 and the Eurotherm 902s can be found on my personal website at http://www.jjmiller.info. 
+Info about the BVT3000 and the Eurotherm 902s can be found on my personal website at http://www.jjmiller.info/post/NMR_Temperature_Fun/. 
 
-Note that the Eurotherm and the BVTs implement a version of the Bisynch protocol over RS232 with 7 data bits, 1 (Even) parity bit, at a maximum speed of 96000 baud. 
+Note that the Eurotherm and the BVTs implement a version of the Bisynch protocol over RS232 with 7 data bits, 1 (even) parity bit, 1 stop bit, at a maximum speed of 9600 baud. 
 
 Example use "in the field"
 -----------------
