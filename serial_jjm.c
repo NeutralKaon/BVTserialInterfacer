@@ -203,7 +203,9 @@ void bvt3000_send_command( const char * cmd , struct sp_port *port_choice )
     #ifdef DEBUG
     if(verboseFlag){
         printf("DEBUG: sent serial string: '"); 
-        printArray(buf); 
+        for (int ix = 0; ix<len; ix++) { 
+            printf("%02x",buf[ix]); 
+        }
         printf("'\n"); 
     }
     #endif 

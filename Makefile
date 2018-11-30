@@ -25,9 +25,10 @@ DEPFILES := $(SOURCES:.c=.d)
 $(PROG) : $(OBJFILES)
 	$(LINK.o) $(LDFLAGS) -o $@ $^
 
+builddebug: cmdline #Assuming that the debug request means that the person is a developer, 
+builddebug: debug
 #For debug 
 debug: CFLAGS += -DDEBUG -g  -O2
-debug: cmdline #Assuming that the debug request means that the person is a developer, 
 #and therefore wants to re-generate the command line options from the GNU gengetopts script.
 debug: $(PROG)
 
