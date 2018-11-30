@@ -1,7 +1,7 @@
 #########################
 SOURCES := cmdline.c BVTserialInterfacer.c serial_jjm.c convenient_wrapper_functions.c 
 PROG := BVTserialInterfacer
-CFLAGS := -Wall -Wextra 
+CFLAGS := -Wall -Wextra -std=c99
 LDFLAGS := -lserialport
 
 #For install
