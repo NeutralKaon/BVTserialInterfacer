@@ -21,7 +21,7 @@ what the box is up to.
 
 # Usage statement  
 ```
-SerialInterfacer v1.0, Nov. 2018
+SerialInterfacer v1.1, Nov. 2018
 
 This dodgy command line tool acts as a command line interfacer with the Bruker
 BVT3000 NMR heater unit that uses a Eurotherm 902s PID controller.
@@ -31,7 +31,9 @@ hardware status, measure things, and so on. Everything is either dreadfully
 verbose (with the -v switch), or alternatively consists of:
 '***XXXX: VALUE', where 'XXXX' depends on the command requested (e.g. TEMP) and
 'VALUE' is the return of that command. See the documentation (that I haven't
-completely yet written...) for more details.
+completely yet written...) for more details.  Further documentation is
+available with the --full-help option.
+
 
 
 Usage: -d /path/to/serialPort command [command argument]
@@ -39,6 +41,7 @@ Usage: -d /path/to/serialPort command [command argument]
 For variable temperature NMR experiments.
 
   -h, --help                    Print help and exit
+      --full-help               Print help, including hidden options, and exit
   -V, --version                 Print version and exit
 
  Written by Jack J. Miller, University of Oxford, heavily ''inspired by'' code
@@ -108,7 +111,7 @@ PID control:
   -M, --manual-mode             Set the device into manual heater power mode
                                   (default=off)
       --get-mode                Return the current PID / Manual control mode
-                                  (default=off)
+                                    (default=off)
       --set-proportional-band=FLOAT
                                 Set the P part of PID
       --get-proportional-band   Get the P part of PID  (default=off)
@@ -116,7 +119,15 @@ PID control:
       --get-integral-time       Get the I part of PID  (default=off)
       --set-differential-time=FLOAT
                                 Set the D part of PID
-      --get-differential-time   Get the D in the PID  (default=off)
+      --get-differential-time   Get the D in the PID
+                                    (default=off)
+      --get-high-cutback        Get the high cutback value  (default=off)
+      --set-high-cutback=FLOAT  Set the high cutback value
+      --get-low-cutback         Get the low cutback value  (default=off)
+      --set-low-cutback=FLOAT   Set the low cutback value
+      --get-adaptive-tune-level Get the adaptive tune level (K)  (default=off)
+      --set-adaptive-tune-level=FLOAT
+                                Set the adaptive tune level (K)
 
 Misc. methods:
       --lock-keypad=INT         Unlock (1) or lock (0) the Eurotherm keypad
