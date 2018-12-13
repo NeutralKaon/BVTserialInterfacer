@@ -120,6 +120,76 @@ char * bvt3000_query( const char * cmd, struct sp_port* port_choice )
 	return buf + 3;
 }
 
+char * bvt3000_query_without_bcc( const char * cmd, struct sp_port* port_choice )
+{ 
+    //This is for the SL command which doesn't append the BCC for some reason
+	static char buf[ 100 ];
+	unsigned char bc;
+	ssize_t len;
+
+	assert( cmd[ 2 ] == '\0' );
+
+	/* Assemble string to be send */
+
+	len = sprintf( buf, "%c%02d%02d%s%c", EOT, GROUP_ID, DEVICE_ID, cmd, ENQ );
+    
+    if (verboseFlag) { 
+        printf("Query string: 0x'"); 
+        for (int i=0; i<len; i++) { 
+            printf("%02x",buf[i]);
+        } 
+        printf("' \n"); 
+    }
+
+	/* Send string and read and analyze response. The response must start
+	   with STX, followed by the 2-char command, then data and finally an
+	   ETX and the BCC (block check character) gets send. */
+
+    enum sp_return error = sp_blocking_write(port_choice, &buf, len, SERIAL_WAIT); 
+
+    if (error <0 || sp_drain(port_choice) ) { 
+        fprintf(stderr, "Error writing to serial port: error is %d\n",error); 
+        bvt3000_comm_fail( );
+    }
+
+    len = sp_blocking_read(port_choice, &buf, sizeof buf -1, SERIAL_WAIT) ;
+
+    if (len  < 0 || sp_drain(port_choice) ) { 
+        fprintf(stderr, "Error reading from serial port\n"); 
+        bvt3000_comm_fail( );
+    }
+    #ifdef DEBUG
+    if(verboseFlag){
+        printf("DEBUG: received serial string: '"); 
+        for (int i = 0; i<len; i++) { 
+            printf("%02x",buf[i]); 
+        }
+        printf("'\n"); 
+    }
+    #endif 
+
+    if(len == sizeof buf - 1                        // reply too long //
+		 || buf[ 0 ] != STX                              // missing STX //
+         || buf[ len - 1 ] != ETX                        // missing ETX //
+         || strncmp( buf + 1, cmd, 2 ) ) {                 // wrong command //
+        fprintf(stderr, "Comunication may be degraded\n") ; 
+        fprintf(stderr, "Received bytes: 0x'"); 
+        for (int i=0; i<len; i++) { 
+            fprintf(stderr, "%02x",buf[i]);
+        } 
+        fprintf(stderr, "' \n"); 
+
+    } 
+
+    bc = buf[ len - 1 ];
+    buf[ len - 1 ] = '\0';
+
+	/* Return just the data as a '\0'-terminated string */
+
+    buf[ len - 2 ] = '\0';
+	return buf + 3;
+}
+
 char* bvt3000_query_debug(const char * cmd, struct sp_port* port_choice , char const * caller_name) { 
     if(verboseFlag){
     printf("Calling bvt3000 query from %s\n", caller_name); }

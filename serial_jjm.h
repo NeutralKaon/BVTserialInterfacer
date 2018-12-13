@@ -169,6 +169,7 @@ struct sp_port* open_and_init_port(char* desired_port, struct sp_port *port_choi
 void bvt3000_send_command( const char * cmd , struct sp_port* port_choice) ;
 size_t bvt3000_add_bcc( unsigned char * data ) ;
 char* bvt3000_query(const char * cmd, struct sp_port* port_choice); 
+char * bvt3000_query_without_bcc( const char * cmd, struct sp_port* port_choice );
 bool bvt3000_check_ack(struct sp_port* port_choice); 
 void bvt3000_comm_fail(); 
 bool bvt3000_check_bcc(unsigned char* data, unsigned char bcc); 
