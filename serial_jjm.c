@@ -625,7 +625,7 @@ void eurotherm902s_set_setpoint( int    sp,
 double eurotherm902s_get_setpoint( int sp, struct sp_port* port_choice )
 {
     assert( sp == SP1 || sp == SP2 );
-    return atof( bvt3000_query( sp == SP1 ? "SL" : "S2" , port_choice) );
+    return atof( bvt3000_query_without_bcc( sp == SP1 ? "SL" : "S2" , port_choice) );
 }
 
 
