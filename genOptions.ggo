@@ -1,5 +1,5 @@
 package "SerialInterfacer"
-version "v1.1, Nov. 2018"
+version "v1.1, Nov. 2018 [Jack J Miller, University of Oxford]"
 purpose "This dodgy command line tool acts as a command line interfacer with the Bruker BVT3000 NMR heater unit that uses a Eurotherm 902s PID controller. 
 
 It provides many silly, but hopefully useful, command line commands to check hardware status, measure things, and so on. Everything is either dreadfully verbose (with the -v switch), or alternatively consists of: 
