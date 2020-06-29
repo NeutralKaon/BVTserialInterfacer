@@ -21,7 +21,7 @@ what the box is up to.
 
 # Usage statement  
 ```
-SerialInterfacer v1.1, Nov. 2018
+SerialInterfacer v1.1, Nov. 2018 [Jack J. Miller, University of Oxford]
 
 This dodgy command line tool acts as a command line interfacer with the Bruker
 BVT3000 NMR heater unit that uses a Eurotherm 902s PID controller.
